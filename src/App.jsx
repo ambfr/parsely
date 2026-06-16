@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
 import LoginPage from './components/Auth/LoginPage'
+import CodeInput from './components/CodeInput'
+import ModeSelector from './components/ModeSelector'
+import OutputPanel from './components/OutputPanel'
 
 function App() {
   const [user, setUser] = useState(null)
   const [guest, setGuest] = useState(false)
+  const [code, setCode] = useState('')
+  const [selectedMode, setSelectedMode] = useState(null)
+  const [output, setOutput] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // Check if already logged in
     supabase.auth.getSession().then(({ data }) => {
       setUser(data.session?.user ?? null)
     })
-
-    // Listen for login/logout
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => setUser(session?.user ?? null)
     )
-
     return () => listener.subscription.unsubscribe()
   }, [])
 
@@ -33,7 +36,16 @@ function App() {
     setGuest(false)
   }
 
-  // Not logged in and not a guest — show login page
+  const handleGenerate = async () => {
+    setLoading(true)
+    setOutput('')
+    // AI call coming in Phase 4
+    setTimeout(() => {
+      setOutput(`[${selectedMode.toUpperCase()} MODE]\n\nAI response coming soon! This is a placeholder.`)
+      setLoading(false)
+    }, 1500)
+  }
+
   if (!user && !guest) {
     return (
       <LoginPage
@@ -43,20 +55,23 @@ function App() {
     )
   }
 
-  // Logged in or guest — show main app (placeholder for now)
   return (
-    <div style={{
-      backgroundColor: '#0a0a0a',
-      minHeight: '100vh',
-      color: '#00ff9f',
-      fontFamily: 'Courier New',
-      padding: '20px',
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontFamily: "'Press Start 2P'", fontSize: '16px', margin: 0 }}>🌿 PARSELY</p>
+    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh' }}>
+
+      {/* Navbar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '16px 24px',
+        borderBottom: '2px solid #1a1a1a',
+      }}>
+        <p style={{ fontFamily: "'Press Start 2P'", fontSize: '14px', color: '#00ff9f', margin: 0 }}>
+          🌿 PARSELY
+        </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{ fontSize: '12px', color: '#555555' }}>
-            {user ? user.email : 'guest mode'}
+          <span style={{ fontFamily: 'Courier New', fontSize: '12px', color: '#888888' }}>
+            {user ? user.email : '[ guest mode ]'}
           </span>
           <button
             onClick={handleSignOut}
@@ -70,12 +85,46 @@ function App() {
               cursor: 'pointer',
               boxShadow: '2px 2px 0px #880000',
             }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(1px)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
           >
             {user ? 'SIGN OUT' : 'EXIT'}
           </button>
         </div>
       </div>
-      <p style={{ color: '#555555', marginTop: '40px' }}>Main app coming soon...</p>
+
+      {/* Main content */}
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
+        <CodeInput code={code} onChange={setCode} />
+        <ModeSelector selectedMode={selectedMode} onSelect={setSelectedMode} />
+
+        {/* Generate button */}
+        <button
+          onClick={handleGenerate}
+          disabled={!code || !selectedMode}
+          style={{
+            backgroundColor: code && selectedMode ? '#00ff9f' : '#1a1a1a',
+            color: code && selectedMode ? '#0a0a0a' : '#555555',
+            fontFamily: "'Press Start 2P'",
+            fontSize: '12px',
+            padding: '16px 32px',
+            border: 'none',
+            cursor: code && selectedMode ? 'pointer' : 'not-allowed',
+            boxShadow: code && selectedMode ? '4px 4px 0px #007a4d' : 'none',
+            width: '100%',
+            marginBottom: '24px',
+            transition: 'all 0.1s',
+          }}
+          onMouseEnter={e => {
+            if (code && selectedMode) e.currentTarget.style.transform = 'translateY(2px)'
+          }}
+          onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+        >
+          GENERATE ▶
+        </button>
+
+        <OutputPanel output={output} loading={loading} />
+      </div>
     </div>
   )
 }

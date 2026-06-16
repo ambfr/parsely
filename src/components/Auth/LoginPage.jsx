@@ -42,7 +42,7 @@ function LoginPage({ onGoogleSignIn, onGuestLogin }) {
   
         {/* Divider */}
         <p style={{
-          color: '#333333',
+          color: '#555555',
           letterSpacing: '4px',
           marginBottom: '32px',
           fontFamily: 'Courier New',
@@ -56,7 +56,7 @@ function LoginPage({ onGoogleSignIn, onGuestLogin }) {
           {['> paste your code', '> pick a personality', '> watch it transform'].map((line) => (
             <p key={line} style={{
               fontFamily: 'Courier New',
-              color: '#555555',
+              color: '#888888',
               fontSize: '14px',
               margin: '8px 0',
             }}>
@@ -98,11 +98,11 @@ function LoginPage({ onGoogleSignIn, onGuestLogin }) {
           onClick={onGuestLogin}
           style={{
             backgroundColor: 'transparent',
-            color: '#555555',
+            color: '#888888',
             fontFamily: "'Press Start 2P'",
             fontSize: '9px',
             padding: '12px 32px',
-            border: '2px solid #333333',
+            border: '2px solid #555555',
             borderRadius: '0',
             boxShadow: '4px 4px 0px #222222',
             cursor: 'pointer',
@@ -116,7 +116,7 @@ function LoginPage({ onGoogleSignIn, onGuestLogin }) {
           onMouseLeave={e => {
             e.currentTarget.style.transform = 'translateY(0)'
             e.currentTarget.style.boxShadow = '4px 4px 0px #222222'
-            e.currentTarget.style.color = '#555555'
+            e.currentTarget.style.color = '#888888'
           }}
         >
           CONTINUE AS GUEST
@@ -126,7 +126,7 @@ function LoginPage({ onGoogleSignIn, onGuestLogin }) {
         <p style={{
           fontFamily: "'Press Start 2P'",
           fontSize: '8px',
-          color: '#333333',
+          color: '#555555',
           position: 'absolute',
           bottom: '20px',
         }}>
