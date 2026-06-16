@@ -6,6 +6,7 @@ import ModeSelector from './components/ModeSelector'
 import OutputPanel from './components/OutputPanel'
 import { explainCode } from './api/gemini'
 import { saveExplanation } from './hooks/useHistory'
+import HistoryPanel from './components/HistoryPanel'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -14,6 +15,7 @@ function App() {
   const [selectedMode, setSelectedMode] = useState(null)
   const [output, setOutput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -44,9 +46,6 @@ function App() {
     try {
       const result = await explainCode(code, selectedMode)
       setOutput(result)
-      console.log('User:', user)
-  
-      // Only save if logged in (not guest)
       if (user) {
         await saveExplanation({
           userId: user.id,
@@ -88,6 +87,25 @@ function App() {
           <span style={{ fontFamily: 'Courier New', fontSize: '12px', color: '#888888' }}>
             {user ? user.email : '[ guest mode ]'}
           </span>
+          {user && (
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              style={{
+                backgroundColor: 'transparent',
+                color: '#00ff9f',
+                border: '2px solid #00ff9f',
+                fontFamily: "'Press Start 2P'",
+                fontSize: '8px',
+                padding: '8px 12px',
+                cursor: 'pointer',
+                boxShadow: '2px 2px 0px #007a4d',
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(1px)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              HISTORY
+            </button>
+          )}
           <button
             onClick={handleSignOut}
             style={{
@@ -140,6 +158,15 @@ function App() {
 
         <OutputPanel output={output} loading={loading} />
       </div>
+
+      {/* History Panel */}
+      {showHistory && user && (
+        <HistoryPanel
+          userId={user.id}
+          onClose={() => setShowHistory(false)}
+        />
+      )}
+
     </div>
   )
 }
