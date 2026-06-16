@@ -156,7 +156,7 @@ function App() {
           GENERATE ▶
         </button>
 
-        <OutputPanel output={output} loading={loading} />
+        <OutputPanel output={output} loading={loading} mode={selectedMode} code={code} />
       </div>
 
       {/* History Panel */}
