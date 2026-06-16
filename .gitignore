@@ -1,0 +1,16 @@
+node_modules
+.env
+.env.local
+.env.*.local
+dist
+dist-ssr
+*.local
+.DS_Store
+Thumbs.db
+vite.config.js.timestamp*
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vscode/
+.idea/

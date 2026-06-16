@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: #00ff9f;
+  font-family: 'Courier New', monospace;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
