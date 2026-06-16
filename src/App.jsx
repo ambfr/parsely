@@ -4,6 +4,7 @@ import LoginPage from './components/Auth/LoginPage'
 import CodeInput from './components/CodeInput'
 import ModeSelector from './components/ModeSelector'
 import OutputPanel from './components/OutputPanel'
+import { explainCode } from './api/gemini'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -39,11 +40,13 @@ function App() {
   const handleGenerate = async () => {
     setLoading(true)
     setOutput('')
-    // AI call coming in Phase 4
-    setTimeout(() => {
-      setOutput(`[${selectedMode.toUpperCase()} MODE]\n\nAI response coming soon! This is a placeholder.`)
-      setLoading(false)
-    }, 1500)
+    try {
+      const result = await explainCode(code, selectedMode)
+      setOutput(result)
+    } catch (error) {
+      setOutput('// ERROR: Something went wrong. Check your API key and try again.')
+    }
+    setLoading(false)
   }
 
   if (!user && !guest) {
