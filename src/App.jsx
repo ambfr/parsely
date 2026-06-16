@@ -5,6 +5,7 @@ import CodeInput from './components/CodeInput'
 import ModeSelector from './components/ModeSelector'
 import OutputPanel from './components/OutputPanel'
 import { explainCode } from './api/gemini'
+import { saveExplanation } from './hooks/useHistory'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -43,8 +44,19 @@ function App() {
     try {
       const result = await explainCode(code, selectedMode)
       setOutput(result)
+      console.log('User:', user)
+  
+      // Only save if logged in (not guest)
+      if (user) {
+        await saveExplanation({
+          userId: user.id,
+          code,
+          mode: selectedMode,
+          output: result,
+        })
+      }
     } catch (error) {
-      setOutput('// ERROR: Something went wrong. Check your API key and try again.')
+      setOutput('// ERROR: Something went wrong. Try again.')
     }
     setLoading(false)
   }
