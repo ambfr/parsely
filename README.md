@@ -25,8 +25,11 @@ Sign in with Google to save your explanation history and export any output as a 
 **AI Output**
 ![Working](screenshots/working.png)
 
+
 **History Panel — Expanded**
+
 ![History Expand](screenshots/historyexpand.png)
+
 
 **History Panel — Bulk Export**
 ![History Export](screenshots/historyexport.png)
@@ -162,6 +165,3 @@ src/
 
 Parsely was built as a portfolio project to practice full-stack development — combining a React frontend, AI API integration, Google OAuth, a PostgreSQL database, and PDF generation into one cohesive (and genuinely fun) app.
 
----
-
-Built by Ambali 🌿
