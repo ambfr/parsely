@@ -1,101 +1,101 @@
 
 # 🌿 Parsely
 
-> your code. every personality.
+An AI-powered web app that explains any code snippet through 6 wildly different creative personalities — from a Hollywood screenwriter to a medieval peasant.
 
-Parsely is an AI-powered web app that explains any code snippet through 6 wildly different creative lenses. Paste your code, pick a personality, and watch it transform.
+🔗 **Live demo:** https://parsely-steel.vercel.app
 
-**Live demo:** https://parsely-steel.vercel.app
+## What does it do?
 
----
+You paste any code snippet, pick a personality, and Parsely explains it in that voice. Want your bubble sort explained as a cooking recipe? Done. Want a class roasted by a savage critic? Done. Want a recursive function explained to your grandma? Also done.
 
-## 📸 Screenshots
+Sign in with Google to save your explanation history and export any output as a PDF.
 
-### Login Page
+## Screenshots
+
+**Login Page**
 ![Login Page](screenshots/login.png)
 
-### Main App
-![Main App](screenshots/main.png)
+**Main App — Guest Mode**
+![Main App](screenshots/guest.png)
 
-### Guest mode
-![guest mode](screenshots/guest.png)
+**Main App — Signed In**
+![Signed In](screenshots/main.png)
 
-### Working
-![working](screenshots/working.png)
+**AI Output**
+![Working](screenshots/working.png)
 
-### History expand
-![history expand](screenshots/historyexpand.png)
+**History Panel — Expanded**
+![History Expand](screenshots/historyexpand.png)
 
-### History export
-![export](screenshots/historyexport.png)
-
----
-
-## Example pdf
-![export history pdf](parsely-history.pdf)
-
-## ✨ Features
-
-- 🎬 **Cinematic** — your code narrated as a Hollywood epic
-- 🍳 **Cooking** — your code explained as a recipe
-- 🔥 **Roast Me** — brutally honest critique of your code
-- 👴 **Grandma** — zero jargon, grandma-friendly explanation
-- ⚔️ **Medieval** — explained by a 13th century peasant
-- 🔮 **Horoscope** — your code's personality and fate
-
-### Plus:
-- Google Sign-In or Guest mode
-- Full explanation history saved per user
-- Export any explanation as a PDF
-- Select multiple history items and export as one PDF
-- Retro pixel UI with Press Start 2P font
+**History Panel — Bulk Export**
+![History Export](screenshots/historyexport.png)
 
 ---
 
-## 🛠️ Tech Stack
+📄 [View sample exported PDF](samples/parsely-history.pdf)
 
-| Layer | Technology |
+## Features
+
+- **6 AI personalities** — each one explains your code in a completely different voice and style
+- **Google Sign-In or Guest mode** — use it without an account, sign in to unlock history
+- **Explanation history** — every output saved automatically with timestamp and mode
+- **PDF export** — export any single explanation or select multiple from history and export as one PDF
+- **Retro pixel UI** — dark theme with Press Start 2P font and neon green accents
+
+## The 6 Modes
+
+| Mode | What it does |
 |---|---|
-| Frontend | React + Vite |
-| Styling | Tailwind CSS + inline styles |
-| AI | Groq API (llama-3.3-70b) |
-| Auth | Supabase Google OAuth |
-| Database | Supabase PostgreSQL |
-| PDF Export | jsPDF |
-| Deployment | Vercel |
+| 🎬 Cinematic | Your code narrated as a Hollywood epic |
+| 🍳 Cooking | Your code explained as a step-by-step recipe |
+| 🔥 Roast Me | A savage critic tears your code apart |
+| 👴 Grandma | Zero jargon, grandma-friendly explanation |
+| ⚔️ Medieval | Explained by a terrified 13th century peasant |
+| 🔮 Horoscope | Your code's personality, flaws, and fate |
 
----
+## Built With
 
-## 🚀 Running Locally
+- **Frontend** (what you see): React + Vite, Tailwind CSS, Press Start 2P font
+- **AI** (generates the explanations): Groq API running Llama 3.3 70B — free tier, no credit card needed
+- **Auth** (login system): Supabase Google OAuth
+- **Database** (stores history): Supabase PostgreSQL with Row Level Security
+- **PDF generation**: jsPDF — runs entirely in the browser
+- **Deployment**: Vercel
 
-### Prerequisites
-- Node.js v18+
-- A Supabase account (free)
-- A Groq API key (free at console.groq.com)
+## How to Run This Yourself
 
-### Steps
+You only need to run the frontend — there's no separate backend server.
 
-**1. Clone the repo**
+### 1. Clone the repo
+
 ```bash
 git clone https://github.com/YOURUSERNAME/parsely.git
 cd parsely
 ```
 
-**2. Install dependencies**
+### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
-**3. Create a `.env` file in the root**
+### 3. Create a `.env` file in the root folder and add your keys
+
 ```
-VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_GROQ_API_KEY=your_groq_api_key
 ```
 
-**4. Set up Supabase**
+Where to get each key:
+- `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` — create a free project at supabase.com, then go to Project Settings → API
+- `VITE_GROQ_API_KEY` — create a free account at console.groq.com → API Keys
 
-Run this SQL in your Supabase SQL editor:
+### 4. Set up the Supabase database
+
+Go to your Supabase dashboard → SQL Editor and run this:
+
 ```sql
 create table history (
   id uuid default gen_random_uuid() primary key,
@@ -115,48 +115,53 @@ create policy "allow all for authenticated users"
   with check (auth.uid() = user_id);
 ```
 
-**5. Start the dev server**
+### 5. Enable Google Auth in Supabase
+
+- Go to Authentication → Providers → Google → toggle ON
+- Follow the [Supabase Google OAuth guide](https://supabase.com/docs/guides/auth/social-login/auth-google) to get your Client ID and Secret from Google Cloud Console
+
+### 6. Start the app
+
 ```bash
 npm run dev
 ```
 
-Open http://localhost:5173 and you're good to go!
+Open http://localhost:5173 and you're good to go.
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
 ├── components/
 │   ├── Auth/
-│   │   └── LoginPage.jsx      # Google sign-in + guest mode
-│   ├── CodeInput.jsx          # Code textarea
-│   ├── ModeSelector.jsx       # 6 personality cards
-│   ├── OutputPanel.jsx        # AI response + copy + PDF export
-│   └── HistoryPanel.jsx       # Saved history with bulk PDF export
+│   │   └── LoginPage.jsx       # Google sign-in + guest mode UI
+│   ├── CodeInput.jsx           # Code paste textarea
+│   ├── ModeSelector.jsx        # 6 personality cards
+│   ├── OutputPanel.jsx         # AI response + copy + PDF export
+│   └── HistoryPanel.jsx        # Saved history with bulk PDF export
 ├── api/
-│   └── gemini.js              # Groq API call
+│   └── gemini.js               # Groq API call
 ├── hooks/
-│   └── useHistory.js          # Save + fetch + delete history
+│   └── useHistory.js           # Save, fetch, delete history from Supabase
 ├── lib/
-│   └── supabase.js            # Supabase client
+│   └── supabase.js             # Supabase client setup
 ├── prompts/
-│   └── modes.js               # System prompts for all 6 modes
-└── App.jsx                    # Main app + auth state
+│   └── modes.js                # System prompts for all 6 personalities
+└── App.jsx                     # Auth state + main layout
 ```
+
+## What's Next
+
+- Mobile responsive design — the app is currently optimised for desktop
+- Share button — generate a shareable link for any explanation
+- Custom mode — write your own system prompt and create your own personality
+- Side-by-side view — compare two modes on the same code at once
+- Syntax highlighting in the code input
+
+## About This Project
+
+Parsely was built as a portfolio project to practice full-stack development — combining a React frontend, AI API integration, Google OAuth, a PostgreSQL database, and PDF generation into one cohesive (and genuinely fun) app.
 
 ---
 
-## 🔑 Environment Variables
-
-| Variable | Where to get it |
-|---|---|
-| `VITE_SUPABASE_URL` | Supabase → Project Settings → API |
-| `VITE_SUPABASE_ANON_KEY` | Supabase → Project Settings → API |
-| `VITE_GROQ_API_KEY` | console.groq.com → API Keys |
-
----
-Built with React, Groq, Supabase, and way too much fun. 🌿
-```
-
+Built by Ambali 🌿
