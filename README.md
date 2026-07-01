@@ -152,7 +152,10 @@ src/
 │   └── modes.js                # System prompts for all 6 personalities
 └── App.jsx                     # Auth state + main layout
 ```
+## Notes
 
+- Supabase's free tier auto-pauses projects after 7 days of inactivity, which breaks Google OAuth sign-in. This repo includes a GitHub Actions workflow (`.github/workflows/keep-supabase-alive.yml`) that pings Supabase every 5 days to prevent this.
+  
 ## What's Next
 
 - Mobile responsive design — the app is currently optimised for desktop
