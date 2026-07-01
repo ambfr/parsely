@@ -36,7 +36,7 @@ Sign in with Google to save your explanation history and export any output as a 
 
 ---
 
-📄 [View sample exported PDF](samples/parsely-history.pdf)
+📄 [View sample exported PDF](parsely-history.pdf)
 
 ## Features
 
