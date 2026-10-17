@@ -2,14 +2,15 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: '0 0 */5 * *'
+    - cron: '0 0 */4 * *'
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase
+      - name: Ping Supabase (real DB read)
         run: |
-          curl -s "https://ldpzebatkfivrifosapq.supabase.co/auth/v1/health" \
-          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
+          curl -fsS --retry 3 -m 60 "https://ldpzebatkfivrifosapq.supabase.co/rest/v1/history?select=*&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
